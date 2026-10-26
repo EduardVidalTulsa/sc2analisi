@@ -1,0 +1,12 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+[Unit]
+Description=sc2analisi: upload new StarCraft II games
+After=network-online.target
+
+[Service]
+ExecStart=/usr/bin/sc2-pujador --fons
+Restart=on-failure
+RestartSec=60
+
+[Install]
+WantedBy=default.target

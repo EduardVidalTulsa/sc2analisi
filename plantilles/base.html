@@ -1,0 +1,34 @@
+<!doctype html>
+<!-- SPDX-License-Identifier: GPL-3.0-or-later -->
+<html lang="{{lang}}" dir="{{dir}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{titol}}</title>
+<meta name="description" content="{{desc_index}}">
+{{alternates}}
+<link rel="stylesheet" href="{{arrel}}style.css">
+<link rel="stylesheet" href="{{arrel}}themes.css">
+<link rel="icon" href="{{arrel}}img/icon.svg" type="image/svg+xml">
+<script>window.LANG = "{{lang}}"; window.LOCALE = "{{locale}}"; window.ARREL = "{{arrel}}"; window.T = {{T_json}};</script>
+</head>
+<body class="pag-{{pagina}}">
+<div class="heroi-art" aria-hidden="true"></div>
+<div class="pagina">
+  <div class="barra-sup">
+    {{tornar}}
+    <span class="sessio" id="sessio"></span>
+    <label class="idioma"><span class="amagat-vis">{{idioma}}</span>
+      <select onchange="location.href = this.value + location.search">{{opcions_idioma}}</select>
+    </label>
+  </div>
+{{cos}}
+  <p class="peu">{{peu}}</p>
+  <p class="peu">{{codi_lliure}}</p>
+  <p class="peu" id="adblock" aria-live="polite"></p>
+</div>
+<script src="{{arrel}}common.js"></script>
+<script src="{{arrel}}ads.js" async></script>
+<script src="{{arrel}}{{pagina}}.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+# generats per puja.sh
+dist/
+dist-pujador/
+__pycache__/
+*.pyc
+.venv/
+*.log
+# còpies velles de les plantilles
+*.vell
+# configuració local de desplegament (servidors, rutes): no es publica
+puja.conf

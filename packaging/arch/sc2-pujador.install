@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+post_install() {
+  echo ">>> Enable it for your user (not root):"
+  echo ">>>   systemctl --user enable --now sc2-pujador"
+  echo ">>> If you installed it before with install.sh, remove that copy first:"
+  echo ">>>   ~/.local/bin/sc2-pujador --uninstall"
+}
+
+post_upgrade() {
+  echo ">>> Restart it:  systemctl --user restart sc2-pujador"
+}

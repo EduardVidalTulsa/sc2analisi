@@ -1,0 +1,29 @@
+[Unit]
+Description=sc2analisi: web API (uploads, login, downloads, summaries)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=sc2
+Group=sc2
+WorkingDirectory=/srv/sc2
+EnvironmentFile=/etc/sc2/battlenet.env
+EnvironmentFile=/etc/sc2/cdn.env
+EnvironmentFile=/etc/sc2/gemini.env
+# optional: SC2_WEB=https://your-server and SC2_TOON=<toon whose games count as "mine">
+EnvironmentFile=-/etc/sc2/web.env
+ExecStart=/srv/sc2/.venv/bin/python -I /srv/sc2/servei.py
+Restart=on-failure
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ReadWritePaths=/srv/sc2/enviats /srv/sc2/maps /srv/sc2/html/data /var/lib/sc2
+MemoryMax=2G
+CPUQuota=200%
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+SystemCallArchitectures=native
+
+[Install]
+WantedBy=multi-user.target

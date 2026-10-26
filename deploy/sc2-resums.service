@@ -1,0 +1,25 @@
+[Unit]
+Description=sc2analisi: Gemini game summaries (highest MMR first, max. 150/month)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=sc2
+Group=sc2
+WorkingDirectory=/srv/sc2
+EnvironmentFile=/etc/sc2/gemini.env
+ExecStart=/srv/sc2/.venv/bin/python -I -u /srv/sc2/resum.py treballa /srv/sc2/html
+Restart=always
+RestartSec=60
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ReadWritePaths=/srv/sc2/html/data/summaries /var/lib/sc2
+MemoryMax=300M
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+SystemCallArchitectures=native
+
+[Install]
+WantedBy=multi-user.target

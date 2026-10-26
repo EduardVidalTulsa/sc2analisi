@@ -1,0 +1,44 @@
+# Example nginx site for sc2analisi. Adapt server_name, certificates and paths.
+limit_req_zone $binary_remote_addr zone=sc2upload:1m rate=12r/m;
+
+server {
+    listen 443 ssl;
+    http2 on;
+    server_name sc2.example.org;
+
+    ssl_certificate     /etc/letsencrypt/live/sc2.example.org/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/sc2.example.org/privkey.pem;
+
+    root /srv/sc2/html;
+    index index.html;
+    gzip on;
+    gzip_types application/json application/javascript text/css;
+
+    # old Catalan names: links already shared and old uploaders keep working
+    rewrite ^/partida\.html$ /game.html permanent;
+    rewrite ^/(\w\w)/partida\.html$ /$1/game.html permanent;
+    rewrite ^/baixades/(.*)$ /downloads/$1 permanent;
+
+    # replay uploads: rate limited, bigger bodies, slow analysis
+    location ~ ^/api/(upload|envia)$ {
+        limit_req zone=sc2upload burst=10 nodelay;
+        limit_req_status 429;
+        client_max_body_size 8m;
+        proxy_pass http://127.0.0.1:8765;
+        proxy_read_timeout 150s;
+    }
+    # on-demand summaries call Gemini: rate limited, slow
+    location ~ ^/api/(summary|resum)$ {
+        limit_req zone=sc2upload burst=10 nodelay;
+        limit_req_status 429;
+        proxy_pass http://127.0.0.1:8765;
+        proxy_read_timeout 200s;
+    }
+    location /api/ {
+        proxy_pass http://127.0.0.1:8765;
+        proxy_read_timeout 60s;
+    }
+    location /data/ { add_header Cache-Control "no-cache"; }
+    # CSS/JS/HTML change with every deploy: let the browser revalidate (304 if unchanged)
+    location ~* \.(css|js|html)$ { add_header Cache-Control "no-cache"; }
+}

@@ -1,0 +1,6 @@
+# Copy to puja.conf (not committed) and adapt. Read by puja.sh.
+SC2_WEB=https://sc2.example.org          # public address of the site
+SC2_SERVIDOR=root@server.example.org     # ssh target of the web/API server
+SC2_DIR=/srv/sc2                         # application directory on the server
+SC2_CDN=user@php.example.org:cdn/        # ssh target and web folder of the PHP host (cdn/)
+SC2_TOON=                                # optional: whose games count as "mine" (e.g. 2-S2-1-1234567)

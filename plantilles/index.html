@@ -1,0 +1,131 @@
+<!-- SPDX-License-Identifier: GPL-3.0-or-later -->
+  <header class="cap">
+    <div>
+      <div class="marca">{{marca}}</div>
+      <h1 id="cap-titol">{{h1_index}}</h1>
+      <p id="resum-cap"></p>
+      <label class="compartir amagat" id="compartir"><input type="checkbox"> {{compartir}}</label>
+    </div>
+  </header>
+
+  <section class="targeta envia" id="envia">
+    <div class="envia-text">
+      <h2>{{h_envia}}</h2>
+      <p class="sub">{{sub_envia}}</p>
+      <p class="envia-on">{{envia_on}}</p>
+    </div>
+    <div class="envia-zona" id="zona">
+      <label class="boto boto-gran">{{boto_envia}}<input type="file" id="fitxer" accept=".SC2Replay" hidden></label>
+      <span class="apagat">{{envia_deixa}}</span>
+      <p class="envia-estat" id="estat" role="status"></p>
+    </div>
+    <p class="envia-priv">{{envia_priv}} {{envia_sessio}}</p>
+    <div class="programa">
+      <h3>{{h_programa}}</h3>
+      <p class="sub">{{sub_programa}}</p>
+      <p class="baixades">
+        <a class="boto" href="{{arrel}}downloads/sc2-pujador.exe" download>⬇ {{baixa_win}}</a>
+      </p>
+      <p class="instal-linux">{{linux_instal}}
+        <code id="cmd-linux">curl -fsSL {{web}}/install.sh | sh</code>
+        <button class="boto boto-petit" type="button" id="copia-linux">{{copia}}</button>
+      </p>
+      <p class="envia-priv">{{programa_nota}}</p>
+    </div>
+  </section>
+
+  <section id="recents" class="amagat">
+    <h2>{{h_recents}}</h2>
+    <p class="sub">{{sub_recents}}</p>
+    <div class="filtres">
+      <select id="r-mapa"></select>
+      <select id="r-mu"></select>
+      <input id="r-nom" type="search">
+      <span class="apagat" id="r-compte"></span>
+    </div>
+    <div class="targeta taula-cont">
+      <table class="ordenable">
+        <thead id="recents-cap"></thead>
+        <tbody id="recents-llista"></tbody>
+      </table>
+    </div>
+    <p style="text-align:center"><button class="boto amagat" id="r-mes"></button></p>
+  </section>
+
+  <div id="tauler">
+  <section class="targeta clau-ia amagat" id="clau-ia">
+    <h2>{{h_clau}}</h2>
+    <p class="sub">{{sub_clau}}</p>
+    <p class="clau-estat" id="clau-estat" role="status"></p>
+    <form class="clau-form" id="clau-form" autocomplete="off">
+      <input type="password" id="clau-in" spellcheck="false" autocomplete="off">
+      <button class="boto" type="submit" id="clau-desa"></button>
+      <button class="boto amagat" type="button" id="clau-esborra"></button>
+    </form>
+    <p class="envia-priv">{{clau_com}}</p>
+    <p class="envia-priv">ⓘ {{clau_priv}}</p>
+  </section>
+  <nav class="races" id="races"></nav>
+
+  <div class="graella g4" id="tiles"><div class="carregant">{{carregant}}</div></div>
+
+  <section>
+    <h2>{{h_mmr}}</h2>
+    <p class="sub">{{sub_mmr}}</p>
+    <div class="targeta"><div id="llegenda-mmr"></div><div id="g-mmr"></div></div>
+  </section>
+
+  <section class="graella g2">
+    <div class="targeta">
+      <h2>{{h_ctrl}}</h2>
+      <p class="sub">{{sub_ctrl}}</p>
+      <div id="t-control"></div>
+    </div>
+    <div class="targeta">
+      <h2>{{h_ritme}}</h2>
+      <p class="sub">{{sub_ritme}}</p>
+      <div id="t-bases"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>{{h_apm}}</h2>
+    <p class="sub">{{sub_apm}}</p>
+    <div class="graella g2">
+      <div class="targeta"><div id="t-apm"></div></div>
+      <div class="targeta"><h3 class="h-graf" id="h-apm-temps"></h3><div id="g-apm"></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 id="h-sq"></h2>
+    <p class="sub" id="sub-sq"></p>
+    <div class="graella g2">
+      <div class="targeta"><div id="t-sq"></div></div>
+      <div class="targeta"><h3 class="h-graf" id="h-sq-temps"></h3><div id="g-sq"></div></div>
+    </div>
+  </section>
+
+  <section class="graella g2">
+    <div class="targeta"><h2>{{h_matchup}}</h2><div id="t-matchup"></div></div>
+    <div class="targeta"><h2>{{h_mapes}}</h2><div id="t-mapes"></div></div>
+  </section>
+
+  <section>
+    <h2>{{h_partides}}</h2>
+    <p class="sub">{{sub_partides}}</p>
+    <div class="filtres">
+      <select id="f-mapa"></select>
+      <select id="f-mu"></select>
+      <select id="f-res"></select>
+      <input id="f-rival" type="search">
+    </div>
+    <div class="targeta taula-cont">
+      <table>
+        <thead id="llista-cap"></thead>
+        <tbody id="llista"></tbody>
+      </table>
+    </div>
+    <p style="text-align:center"><button class="boto amagat" id="mes"></button></p>
+  </section>
+  </div>

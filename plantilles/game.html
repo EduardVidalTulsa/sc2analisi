@@ -1,0 +1,82 @@
+<!-- SPDX-License-Identifier: GPL-3.0-or-later -->
+  <header class="cap">
+    <div>
+      <div class="marca" id="cap-mapa">{{marca}}</div>
+      <h1 id="cap-titol">{{carregant}}</h1>
+      <p id="cap-det"></p>
+    </div>
+    <a class="boto boto-baixa amagat" id="baixa" href="#" download>⬇ {{baixa_replay}}</a>
+  </header>
+
+  <section class="targeta resum amagat" id="resum">
+    <div class="etiq">{{resum_auto}}</div>
+    <p id="resum-text"></p>
+  </section>
+
+  <div class="graella g4" id="tiles"></div>
+
+  <section>
+    <h2>{{h_mapa}}</h2>
+    <p class="sub">{{sub_mapa}}</p>
+    <div class="mapa-zona">
+      <div>
+        <div class="mapa-marc"><canvas id="mapa"></canvas></div>
+        <div class="reproductor">
+          <button class="boto" id="play" aria-label="{{reprodueix}}">▶</button>
+          <select class="boto" id="velocitat" aria-label="{{velocitat}}">
+            <option value="8">×8</option><option value="16" selected>×16</option><option value="32">×32</option><option value="64">×64</option>
+          </select>
+          <input type="range" id="temps" min="0" value="0" step="1" aria-label="{{temps_partida}}">
+          <span class="temps" id="temps-txt">0:00</span>
+        </div>
+        <div class="capes">
+          <label><input type="checkbox" id="c-control" checked> {{c_control}}</label>
+          <label><input type="checkbox" id="c-estr" checked> {{c_estr}}</label>
+          <label><input type="checkbox" id="c-exer" checked> {{c_exer}}</label>
+          <label><input type="checkbox" id="c-comb" checked> {{c_comb}}</label>
+          <label><input type="checkbox" id="c-bases" checked> {{c_bases}}</label>
+          <label><input type="checkbox" id="c-camera" checked> {{c_camera}}</label>
+          <label class="so"><input type="checkbox" id="c-so"> ♪ {{c_so}}</label>
+          <a class="boto boto-petit" id="midi" href="#" title="{{midi_titol}}">⬇ MIDI</a>
+        </div>
+      </div>
+      <div class="targeta panell" id="panell"></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>{{h_evol}}</h2>
+    <p class="sub">{{sub_evol}}</p>
+    <div id="llegenda-g"></div>
+    <div class="graella g2">
+      <div class="targeta"><h3 class="h-graf">{{g_control}}</h3><div id="g-control"></div></div>
+      <div class="targeta"><h3 class="h-graf">{{g_exer}}</h3><div id="g-exer"></div></div>
+      <div class="targeta"><h3 class="h-graf">{{g_treb}}</h3><div id="g-treb"></div></div>
+      <div class="targeta"><h3 class="h-graf">{{g_ing}}</h3><div id="g-ing"></div></div>
+      <div class="targeta"><h3 class="h-graf">{{g_apm}}</h3><div id="g-apm"></div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>{{h_combats}}</h2>
+    <p class="sub">{{sub_combats}}</p>
+    <div class="targeta taula-cont"><table>
+      <thead id="combats-cap"></thead>
+      <tbody id="combats"></tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>{{h_bases}}</h2>
+    <p class="sub">{{sub_bases}}</p>
+    <div class="targeta"><div class="gantt" id="gantt"></div></div>
+  </section>
+
+  <section>
+    <h2>{{h_ordre}}</h2>
+    <div class="graella g2">
+      <div class="targeta"><h3 class="h-graf" id="ordre-jo-t"></h3><div class="ordre" id="ordre-jo"></div></div>
+      <div class="targeta"><h3 class="h-graf" id="ordre-rival-t"></h3><div class="ordre" id="ordre-rival"></div></div>
+    </div>
+  </section>
+<script src="{{arrel}}music.js"></script>

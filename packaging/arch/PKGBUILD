@@ -1,0 +1,40 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
+# StarCraft II replay uploader for sc2.lestudi.com (or the server given in SC2_WEB).
+#   makepkg -si                                  # for sc2.lestudi.com
+#   SC2_WEB=https://your-server makepkg -si      # for another instance
+# Then, for your user:  systemctl --user enable --now sc2-pujador
+pkgname=sc2-pujador-git
+pkgver=r1.0000000
+pkgrel=1
+pkgdesc="Uploads your StarCraft II 1v1 replays to sc2.lestudi.com for analysis"
+arch=('x86_64' 'aarch64')
+url="https://github.com/EduardVidalTulsa/sc2analisi"
+license=('GPL-3.0-or-later')
+makedepends=('go' 'git')
+provides=('sc2-pujador')
+conflicts=('sc2-pujador')
+install=sc2-pujador.install
+source=("sc2analisi::git+https://github.com/EduardVidalTulsa/sc2analisi.git"
+        "sc2-pujador.service")
+sha256sums=('SKIP'
+            'SKIP')
+
+: "${SC2_WEB:=https://sc2.lestudi.com}"
+
+pkgver() {
+  cd sc2analisi
+  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
+}
+
+build() {
+  cd sc2analisi/pujador
+  export CGO_ENABLED=0
+  export GOFLAGS="-buildmode=pie -trimpath -mod=readonly -modcacherw"
+  go build -ldflags "-s -w -X main.servidor=${SC2_WEB%/}/ -X main.empaquetat=si" -o sc2-pujador .
+}
+
+package() {
+  install -Dm755 sc2analisi/pujador/sc2-pujador "$pkgdir/usr/bin/sc2-pujador"
+  install -Dm644 sc2-pujador.service "$pkgdir/usr/lib/systemd/user/sc2-pujador.service"
+  install -Dm644 sc2analisi/LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}

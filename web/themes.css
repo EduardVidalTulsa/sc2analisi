@@ -1,0 +1,166 @@
+/* SPDX-License-Identifier: GPL-3.0-or-later */
+/* Temes per raça: <html data-raca="terran|zerg|protoss">. Són foscos sempre.
+   Els colors de jugador (--jo, --rival) no canvien perquè els gràfics es llegeixin igual a tot arreu. */
+@font-face { font-family: "Rajdhani"; src: url(fonts/Rajdhani-600.woff2) format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Rajdhani"; src: url(fonts/Rajdhani-700.woff2) format("woff2"); font-weight: 700; font-display: swap; }
+@font-face { font-family: "Cinzel"; src: url(fonts/Cinzel.woff2) format("woff2"); font-weight: 400 900; font-display: swap; }
+@font-face { font-family: "Grenze"; src: url(fonts/Grenze.woff2) format("woff2"); font-weight: 100 900; font-display: swap; }
+
+:root[data-raca] {
+  color-scheme: dark;
+  --text: #f0efec; --text2: #c3c2b7; --text3: #8d8c84;
+  --jo: #3987e5; --rival: #d95926; --serie7: #9085e9; --serie3: #199e70; --serie4: #c98500;
+  --jo-fons: rgba(57, 135, 229, .16); --rival-fons: rgba(217, 89, 38, .16);
+  --ombra: none;
+}
+
+/* ---------------------------------------------------------------- Terran: acer i franges d'avís */
+:root[data-raca="terran"] {
+  --fons: #101214; --sup: #191c1f; --sup2: #23272b; --linia: #343a40;
+  --text2: #c2c7cc; --text3: #8a9096;
+  --accent: #e3b23c; --radi: 2px;
+  --font-titol: "Rajdhani", system-ui, sans-serif;
+}
+[data-raca="terran"] body {
+  background-color: var(--fons);
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+[data-raca="terran"] body::before {
+  content: ""; display: block; height: 6px;
+  background: repeating-linear-gradient(-45deg, var(--accent) 0 12px, #16181a 12px 24px);
+}
+[data-raca="terran"] h1, [data-raca="terran"] h2, [data-raca="terran"] .marca { text-transform: uppercase; letter-spacing: .04em; }
+[data-raca="terran"] h1 { font-size: 30px; }
+[data-raca="terran"] h2 { font-size: 19px; }
+[data-raca="terran"] .marca { color: var(--accent); }
+[data-raca="terran"] .targeta {
+  border-top: 2px solid #4a5157;
+  background-image: linear-gradient(180deg, rgba(255,255,255,.03), transparent 40%);
+  position: relative;
+}
+/* "cargols" a les cantonades */
+[data-raca="terran"] .targeta::before, [data-raca="terran"] .targeta::after {
+  content: ""; position: absolute; top: 6px; width: 4px; height: 4px; border-radius: 50%; background: #4f565c;
+}
+[data-raca="terran"] .targeta::before { left: 6px; }
+[data-raca="terran"] .targeta::after { right: 6px; }
+[data-raca="terran"] .tile .valor { font-size: 34px; font-weight: 700; }
+
+/* ---------------------------------------------------------------- Zerg: creep i formes orgàniques */
+:root[data-raca="zerg"] {
+  --fons: #120c12; --sup: #1c141c; --sup2: #281c27; --linia: #3b2a39;
+  --text2: #cfc1cb; --text3: #94838f;
+  --accent: #c76be6; --radi: 18px;
+  --font-titol: "Grenze", Georgia, serif;
+}
+[data-raca="zerg"] body {
+  background-color: var(--fons);
+  background-image:
+    radial-gradient(ellipse 60% 40% at 10% 0%, rgba(120, 40, 110, .28), transparent 70%),
+    radial-gradient(ellipse 50% 35% at 95% 30%, rgba(90, 30, 90, .22), transparent 70%),
+    radial-gradient(ellipse 70% 40% at 40% 100%, rgba(110, 50, 60, .20), transparent 70%);
+  background-attachment: fixed;
+}
+[data-raca="zerg"] h1 { font-size: 34px; font-weight: 700; }
+[data-raca="zerg"] h2 { font-size: 21px; font-weight: 650; }
+[data-raca="zerg"] .marca { color: var(--accent); letter-spacing: .12em; }
+[data-raca="zerg"] .targeta {
+  border-color: #3f2a3d;
+  background-image: radial-gradient(ellipse 80% 60% at 0% 0%, rgba(199, 107, 230, .07), transparent 70%);
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,.02), 0 6px 24px rgba(0,0,0,.35);
+}
+[data-raca="zerg"] .tile .valor { font-size: 34px; font-weight: 700; }
+[data-raca="zerg"] .boto, [data-raca="zerg"] .filtres select, [data-raca="zerg"] .filtres input, [data-raca="zerg"] .capes label { border-radius: 999px; }
+[data-raca="zerg"] .mapa-marc { border-radius: 18px; }
+
+/* ---------------------------------------------------------------- Protoss: daurat, cian i angles tallats */
+:root[data-raca="protoss"] {
+  --fons: #0a0f1a; --sup: #111a2a; --sup2: #18233a; --linia: #26344f;
+  --text2: #c4cbd8; --text3: #8590a3;
+  --accent: #d9b45a; --radi: 0;
+  --font-titol: "Cinzel", Georgia, serif;
+}
+[data-raca="protoss"] body {
+  background-color: var(--fons);
+  background-image:
+    radial-gradient(ellipse 60% 45% at 50% -10%, rgba(80, 190, 230, .16), transparent 70%),
+    radial-gradient(ellipse 40% 30% at 100% 100%, rgba(217, 180, 90, .08), transparent 70%);
+  background-attachment: fixed;
+}
+[data-raca="protoss"] h1 { font-size: 28px; letter-spacing: .03em; }
+[data-raca="protoss"] h2 { font-size: 18px; letter-spacing: .04em; }
+[data-raca="protoss"] .marca { color: var(--accent); }
+[data-raca="protoss"] header.cap h1 { text-shadow: 0 0 18px rgba(90, 200, 240, .35); }
+[data-raca="protoss"] .targeta {
+  --tall: 14px;
+  border: 0;
+  clip-path: polygon(var(--tall) 0, 100% 0, 100% calc(100% - var(--tall)), calc(100% - var(--tall)) 100%, 0 100%, 0 var(--tall));
+  background:
+    linear-gradient(135deg, var(--accent) 0 calc(var(--tall) * .72), transparent 0) top left / 30px 30px no-repeat,
+    linear-gradient(315deg, rgba(90, 200, 240, .8) 0 calc(var(--tall) * .72), transparent 0) bottom right / 30px 30px no-repeat,
+    linear-gradient(180deg, rgba(90, 200, 240, .05), transparent 50%),
+    var(--sup);
+  box-shadow: inset 0 0 0 1px var(--linia);
+}
+[data-raca="protoss"] .tile .valor { font-size: 30px; font-weight: 700; }
+[data-raca="protoss"] .mapa-marc { border-radius: 0; border-color: #2b3c5c; box-shadow: 0 0 0 1px rgba(90,200,240,.15), 0 0 30px rgba(90,200,240,.08); }
+
+/* ---------------------------------------------------------------- selector de raça (portada) */
+.races { display: flex; gap: 6px; flex-wrap: wrap; margin: 0 0 18px; }
+.races button {
+  font: inherit; font-family: var(--font-titol, inherit); font-weight: 600; font-size: 15px; cursor: pointer;
+  color: var(--text2); background: var(--sup); border: 1px solid var(--linia); border-radius: var(--radi, 8px);
+  padding: 7px 16px; display: inline-flex; align-items: center; gap: 8px;
+}
+[data-raca="zerg"] .races button { border-radius: 999px; }
+.races button[aria-pressed="true"] { color: var(--text); border-color: var(--accent); box-shadow: inset 0 -2px 0 var(--accent); }
+.races button small { color: var(--text3); font-weight: 400; font-family: system-ui, sans-serif; font-size: 12px; }
+
+/* ---------------------------------------------------------------- Espai (totes les races): planetes i naus */
+:root[data-raca="space"] {
+  --fons: #070912; --sup: #0f1324; --sup2: #171c33; --linia: #262c4a;
+  --text2: #c6c9dc; --text3: #8a8fa8;
+  --accent: #9a7cff; --radi: 12px;
+  --font-titol: "Rajdhani", system-ui, sans-serif;
+}
+[data-raca="space"] body { background: var(--fons); }
+[data-raca="space"] h1, [data-raca="space"] h2, [data-raca="space"] .marca { letter-spacing: .03em; }
+[data-raca="space"] h1 { font-size: 34px; font-weight: 700; }
+[data-raca="space"] h2 { font-size: 20px; }
+[data-raca="space"] .marca { color: var(--accent); }
+[data-raca="space"] .targeta {
+  background: linear-gradient(160deg, rgba(154,124,255,.08), transparent 45%), rgba(15,19,36,.92);
+  border-color: #2a2f52;
+  box-shadow: 0 0 0 1px rgba(154,124,255,.06), 0 10px 30px rgba(0,0,0,.4);
+  backdrop-filter: blur(3px);
+}
+[data-raca="space"] .tile .valor { font-size: 34px; font-weight: 700; }
+
+/* ---------------------------------------------------------------- il·lustració de capçalera */
+.heroi-art {
+  position: absolute; inset: 0 0 auto 0; height: 460px; z-index: 0; pointer-events: none;
+  background: var(--art, none) center 40% / cover no-repeat;
+  -webkit-mask-image: linear-gradient(180deg, #000 40%, transparent 100%);
+          mask-image: linear-gradient(180deg, #000 40%, transparent 100%);
+  opacity: .9;
+}
+:root[data-raca="space"]   { --art: url(img/space.svg); }
+:root[data-raca="terran"]  { --art: url(img/terran.svg); }
+:root[data-raca="zerg"]    { --art: url(img/zerg.svg); }
+:root[data-raca="protoss"] { --art: url(img/protoss.svg); }
+.pagina { position: relative; z-index: 1; }
+:root[data-raca] header.cap { min-height: 250px; align-items: flex-end; }
+:root[data-raca] header.cap h1, :root[data-raca] header.cap p, :root[data-raca] header.cap .marca { text-shadow: 0 2px 12px rgba(0,0,0,.85), 0 0 2px rgba(0,0,0,.9); }
+:root[data-raca] .pag-partida header.cap, .pag-partida header.cap { min-height: 190px; }
+@media (max-width: 600px) { .heroi-art { height: 320px; } :root[data-raca] header.cap { min-height: 180px; } }
+
+/* icones de les pestanyes */
+.ico { display: inline-block; width: 16px; height: 16px; background: currentColor;
+  -webkit-mask: var(--m) center / contain no-repeat; mask: var(--m) center / contain no-repeat; }
+.ico-terran { --m: url(img/ico-terran.svg); color: #e3b23c; }
+.ico-zerg { --m: url(img/ico-zerg.svg); color: #c76be6; }
+.ico-protoss { --m: url(img/ico-protoss.svg); color: #6fe6ff; }
+.ico-space { --m: url(img/ico-space.svg); color: #9a7cff; }
