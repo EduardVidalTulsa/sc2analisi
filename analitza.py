@@ -236,7 +236,8 @@ def llegeix_mapa(path):
     nom_mapa = mm.group(1).strip().decode() if mm else os.path.basename(path)
     cl = a.read_file("t3SyncCliffLevel")
     cw, chh = struct.unpack_from("<II", cl, 8)
-    cliff = np.frombuffer(cl[16:16 + cw * chh * 2], dtype="<u2").reshape(chh, cw)
+    # la capçalera fa 32 bytes (no 16): les dades són els darrers cw*chh valors
+    cliff = np.frombuffer(cl[len(cl) - cw * chh * 2:], dtype="<u2").reshape(chh, cw)
     return dict(nom=nom_mapa, w=w, h=h, camera=(l, b, r, t), cliff=cliff)
 
 
