@@ -37,16 +37,28 @@ $("#copia-linux").addEventListener("click", async ev => {
   catch { getSelection().selectAllChildren($("#cmd-linux")); }  // sense permís de porta-retalls: almenys queda seleccionada
 });
 
+// una partida de la llista de ma.lestudi.com, com les d'aquí; la fitxa i els perfils són allà
+const MA = "https://ma.lestudi.com/";
+function deMa(g) {
+  const eqs = Object.values(g.equips).map(e => e.jugadors.map(j => ({
+    nom: j.nom, toon: j.toon, resultat: e.posicio === 1 ? "V" : null,
+    perfil: `${MA}player.html?player=${encodeURIComponent(j.toon)}&lang=${LANG}`,
+  })));
+  return { id: g.id, data: Date.parse(g.data + "Z") / 1000, mapa: g.mapa, durada: g.durada, mmr: null, mu: "Marine Arena",
+           jugadors: eqs.flat(), equips: eqs, href: `${MA}game.html?id=${g.id}&lang=${LANG}` };
+}
+
 // ---- llista del servidor: totes les partides registrades, de qualsevol jugador, amb ordre i filtres
 async function recents() {
   $("#tauler").classList.add("amagat");
   $("#recents").classList.remove("amagat");
   $("#cap-titol").textContent = t("h1_convidat");
-  const gs = (await json("data/games.json").catch(() => [])).map(g => {
+  const [sc2, ma] = await Promise.all([json("data/games.json").catch(() => []), json("data/ma-games.json").catch(() => [])]);
+  const gs = sc2.map(g => {
     const ms = g.jugadors.map(j => j.mmr).filter(Boolean);
     const rs = g.jugadors.map(j => RACA[j.raça] || "?").sort();
     return { ...g, mmr: ms.length ? ms.reduce((a, b) => a + b, 0) / ms.length : null, mu: rs.join("v") };
-  });
+  }).concat(ma.map(deMa)).sort((a, b) => b.data - a.data);
   // columnes ordenables: [clau, text, numèrica]
   const COLS = [["data", t("data"), true], ["mapa", t("mapa"), false], [null, t("jugadors")],
                 ["mmr", t("mmr_mitja"), true], ["durada", t("durada"), true]];
@@ -60,9 +72,12 @@ async function recents() {
   $("#r-nom").placeholder = t("cerca_jugador");
 
   const jugador = j => {
-    const nom = /^[1-9]-S2-[1-9]-[0-9]+$/.test(j.toon || "") ? `<a class="nom-jugador" href="./?player=${encodeURIComponent(j.toon)}">${esc(j.nom)}</a>` : esc(j.nom);
-    return `${raca(j.raça)} ${j.resultat === "V" ? `<b>${nom}</b>` : nom}`;
+    const nom = /^[1-9]-S2-[1-9]-[0-9]+$/.test(j.toon || "") ? `<a class="nom-jugador" href="${j.perfil || "./?player=" + encodeURIComponent(j.toon)}">${esc(j.nom)}</a>` : esc(j.nom);
+    return `${j.raça ? raca(j.raça) + " " : ""}${j.resultat === "V" ? `<b>${nom}</b>` : nom}`;
   };
+  // Marine Arena: equips de dos, amb els noms units per "+"
+  const jugadors = g => g.equips ? g.equips.map(e => e.map(jugador).join(" + ")).join(` <span class="apagat">${t("vs")}</span> `)
+    : g.jugadors.map(jugador).join(` <span class="apagat">${t("vs")}</span> `);
   function pinta() {
     $("#recents-cap").innerHTML = "<tr>" + COLS.map(([c, txt, n]) => !c ? `<th>${txt}</th>`
       : `<th class="${n && c !== "data" ? "num" : ""}" data-ord="${c}" aria-sort="${c === ordre ? (desc ? "descending" : "ascending") : "none"}" tabindex="0">${txt}<span class="fletxa">${c === ordre ? (desc ? "▼" : "▲") : ""}</span></th>`).join("") + "</tr>";
@@ -76,9 +91,9 @@ async function recents() {
       return desc ? -r : r;
     });
     $("#r-compte").textContent = t("n_partides", { n: P.length });
-    $("#recents-llista").innerHTML = P.slice(0, mostra).map(g => `<tr class="clic" data-href="game.html?id=${g.id}">
+    $("#recents-llista").innerHTML = P.slice(0, mostra).map(g => `<tr class="clic" data-href="${g.href || "game.html?id=" + g.id}">
       <td>${data(g.data)}</td><td>${esc(g.mapa)}</td>
-      <td>${g.jugadors.map(jugador).join(` <span class="apagat">${t("vs")}</span> `)}</td>
+      <td>${jugadors(g)}</td>
       <td class="num">${g.mmr ? num(g.mmr) : "–"}</td>
       <td class="num">${mmss(g.durada)}</td></tr>`).join("")
       || `<tr><td colspan="5" class="apagat">${t(gs.length ? "cap_filtre" : "cap_recent")}</td></tr>`;
