@@ -348,7 +348,12 @@ const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
     treb: [statA(jo.pid, tt).treb, statA(rival.pid, tt).treb],
     exer: [statA(jo.pid, tt).exer, statA(rival.pid, tt).exer],
   }));
-  $("#c-so").addEventListener("change", ev => musica.activa(ev.target.checked));
+  // encesa per defecte (si no s'ha apagat mai); el navegador només deixa sonar després d'un clic: s'engega amb ▶
+  try { if (localStorage.getItem("sc2-so") === "0") $("#c-so").checked = false; } catch {}
+  $("#c-so").addEventListener("change", ev => {
+    musica.activa(ev.target.checked && jugant);
+    try { localStorage.setItem("sc2-so", ev.target.checked ? "1" : "0"); } catch {}
+  });
   $("#midi").addEventListener("click", ev => {
     ev.preventDefault();
     const a = document.createElement("a");
@@ -360,6 +365,7 @@ const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${a})`;
   $("#play").onclick = () => {
     jugant = !jugant; $("#play").textContent = jugant ? "❚❚" : "▶";
     if (!jugant) musica.buida();
+    musica.activa(jugant && $("#c-so").checked);
     if (jugant) { if (t_ >= g.durada) t_ = 0; darrerT = performance.now(); requestAnimationFrame(pas); }
   };
   function pas(ara) {
