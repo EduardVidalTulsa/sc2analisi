@@ -16,7 +16,7 @@ POST /api/key                     {"clau", "lang"}: la prova i la desa xifrada; 
 Les rutes i paràmetres d'abans (en català) continuen funcionant: el pujador ja instal·lat envia a /api/envia?jugador=.
 """
 import hashlib, http.cookies, json, os, re, resource, secrets, subprocess, sys, threading, time
-import urllib.parse, urllib.request
+import urllib.error, urllib.parse, urllib.request
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import urlsplit, parse_qs
 
@@ -59,6 +59,26 @@ def ruta(path):
     return ALIES.get(url.path, url.path), q
 JO_TOON = os.environ.get("SC2_TOON", "")  # les partides d'origen "meu" són d'aquest toon
 RESUMS = threading.Semaphore(2)  # crides a Gemini alhora des de la web
+
+
+MA_UPLOAD = os.environ.get("SC2_MA_UPLOAD", "")  # p. ex. http://127.0.0.1:8767/api/upload (servei de ma.lestudi.com)
+
+
+def envia_a_ma(dades, toon, galetes):
+    """Passa una partida que no és 1v1 al servei de Marine Arena; torna la seva resposta o None si no la vol."""
+    if not MA_UPLOAD:
+        return None
+    req = urllib.request.Request(MA_UPLOAD + (f"?player={toon}" if toon else ""), data=dades, method="POST",
+                                 headers={"Content-Type": "application/octet-stream", **({"Cookie": galetes} if galetes and not toon else {})})
+    try:
+        with urllib.request.urlopen(req, timeout=200) as r:
+            return dict(json.loads(r.read()), web="ma")
+    except urllib.error.HTTPError as ex:
+        if ex.code != 422:
+            sys.stderr.write(f"ma: {ex.code}\n")
+    except Exception as ex:
+        sys.stderr.write(f"ma: {ex!r}\n")
+    return None
 
 
 def limits():
@@ -365,6 +385,10 @@ class H(BaseHTTPRequestHandler):
                     return self.respon(500, {"error": "temps"})
             if p.returncode == 2:
                 os.remove(f)
+                # no és 1v1: potser és de Marine Arena i la vol ma.lestudi.com (així el pujador no ha de canviar)
+                ma = envia_a_ma(dades, toon, self.headers.get("Cookie"))
+                if ma is not None:
+                    return self.respon(200, ma)
                 return self.respon(422, {"error": "no-1v1"})
             if p.returncode != 0:
                 sys.stderr.write(p.stderr.decode(errors="replace")[-2000:] + "\n")

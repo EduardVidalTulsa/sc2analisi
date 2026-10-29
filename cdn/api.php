@@ -74,7 +74,8 @@ try {
             file_put_contents("$f.tmp", $dades);
             rename("$f.tmp", $f);
         }
-        $origen = in_array($_GET['origen'] ?? '', ['meu', 'enviat'], true) ? $_GET['origen'] : 'enviat';
+        // 'ma': partides de Marine Arena (ma.lestudi.com), que l'anàlisi de sc2 no fa servir
+        $origen = in_array($_GET['origen'] ?? '', ['meu', 'enviat', 'ma'], true) ? $_GET['origen'] : 'enviat';
         db()->prepare("INSERT INTO replays (id, origen, nom, mida, rebut) VALUES (?,?,?,?,?)
                        ON DUPLICATE KEY UPDATE origen = IF(origen = 'meu', 'meu', VALUES(origen)), nom = COALESCE(VALUES(nom), nom)")
             ->execute([$id, $origen, mb_substr((string)($_GET['nom'] ?? ''), 0, 255) ?: null, strlen($dades), time()]);

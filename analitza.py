@@ -942,6 +942,8 @@ def main(dir_mapes, dir_out):
     perfils = defaultdict(dict)  # toon -> id -> entrada
     with tempfile.TemporaryDirectory() as tmp:
         for rep in magatzem.replays():
+            if rep["origen"] == "ma":  # Marine Arena: les analitza ma.lestudi.com
+                continue
             rid = rep["id"]
             llistadors = set(de_qui.get(rid, ()))
             if rep["origen"] == "meu":
