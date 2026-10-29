@@ -36,6 +36,10 @@ TORNADA = WEB + "/api/battlenet"
 BNET_ID = os.environ.get("BNET_CLIENT_ID", "")
 BNET_SECRET = os.environ.get("BNET_CLIENT_SECRET", "")
 DIES_SESSIO = 30
+# perquè altres webs germanes (ma.lestudi.com) comparteixin l'inici de sessió: la galeta val per a tot el domini
+# i el login pot tornar a aquestes adreces. Buit = només aquesta web.
+GALETA_DOMINI = os.environ.get("SC2_GALETA_DOMINI", "")
+ALTRES_WEBS = {h.strip() for h in os.environ.get("SC2_ALTRES_WEBS", "").split(",") if h.strip()}
 RE_TOON = re.compile(r"[1-9]-S2-[1-9]-[0-9]{1,12}")
 RE_ID = re.compile(r"[0-9a-f]{12}")
 RE_CLAU_GEMINI = re.compile(r"[A-Za-z0-9._-]{20,120}")
@@ -201,8 +205,13 @@ class H(BaseHTTPRequestHandler):
 
     @staticmethod
     def torna_segura(t):
-        # només rutes del mateix lloc, per no fer de redirector obert
-        return t if t and t.startswith("/") and not t.startswith("//") else "/"
+        # només rutes del mateix lloc o de les webs germanes, per no fer de redirector obert
+        if t and t.startswith("/") and not t.startswith("//"):
+            return t
+        u = urlsplit(t or "")
+        if u.scheme == "https" and u.hostname in ALTRES_WEBS and not u.username and not u.port:
+            return t
+        return "/"
 
     def do_GET(self):
         p, q = ruta(self.path)
@@ -274,7 +283,7 @@ class H(BaseHTTPRequestHandler):
                 return self.redirigeix("/?login=error", [esborra])
             desa_usuari(int(info["id"]), info.get("battletag", ""), toons)
             clau = nova_sessio(int(info["id"]))
-            sessio = f"sc2s={clau}; Path=/; Max-Age={DIES_SESSIO * 86400}; HttpOnly; Secure; SameSite=Lax"
+            sessio = f"sc2s={clau}; Path=/; Max-Age={DIES_SESSIO * 86400}; HttpOnly; Secure; SameSite=Lax" + (f"; Domain={GALETA_DOMINI}" if GALETA_DOMINI else "")
             return self.redirigeix(torna, [esborra, sessio])
         return self.respon(404, {"error": "no-trobat"})
 
@@ -284,7 +293,11 @@ class H(BaseHTTPRequestHandler):
             clau = self.galeta("sc2s")
             if clau:
                 tanca_sessio(clau)
-            return self.respon(200, {}, ["sc2s=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax"])
+            # esborra la de la web i, si n'hi ha, la de tot el domini
+            fora = ["sc2s=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax"]
+            if GALETA_DOMINI:
+                fora.append(f"sc2s=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax; Domain={GALETA_DOMINI}")
+            return self.respon(200, {}, fora)
         if p == "/api/key":
             u = usuari_de(self.galeta("sc2s"))
             if not u:

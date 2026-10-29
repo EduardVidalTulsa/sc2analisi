@@ -236,7 +236,9 @@ The server it uploads to is set **at build time** (`-ldflags "-X main.servidor=h
    - `cdn.env`: `CDN_URL` (the `api.php`) and `CDN_CLAU` (the same secret as `~/.sc2/clau` on the PHP host);
    - `gemini.env`: `GEMINI_API_KEY` (optional; an AI Studio project **without billing** is free);
    - `claus.key`: 32 bytes in hex, to encrypt users' keys;
-   - `web.env`: `SC2_WEB=https://<domain>` and optionally `SC2_TOON=<toon>`.
+   - `web.env`: `SC2_WEB=https://<domain>` and optionally `SC2_TOON=<toon>`. To share the login with sister sites
+     under the same domain, also `SC2_GALETA_DOMINI=<domain>` (the session cookie then covers every subdomain) and
+     `SC2_ALTRES_WEBS=<host>,<host>` (hosts the login may return to with `/api/login?return=https://<host>/…`).
 3. On the PHP host: `api.php`, `r.php`, `.htaccess`, and in `~/.sc2/` the secret (`clau`) and the MySQL credentials
    (`my.cnf`). Call `api.php?op=installa` once to create the tables.
 4. Copy and adapt `deploy/` (systemd and nginx).
