@@ -182,6 +182,7 @@ td.num, th.num { text-align: right; }
 /* barra superior: tornar + idioma */
 .barra-sup { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 8px; min-height: 32px; }
 .barra-sup .tornar::before { content: "← "; }
+.barra-sup .germana { font-size: 13.5px; white-space: nowrap; }
 [dir="rtl"] .barra-sup .tornar::before { content: "→ "; }
 .idioma select { font: inherit; font-size: 13px; color: var(--text); background: var(--sup); border: 1px solid var(--linia); border-radius: 7px; padding: 4px 8px; margin-inline-start: auto; }
 .barra-sup .idioma { margin-inline-start: auto; }

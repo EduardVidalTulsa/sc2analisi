@@ -14,6 +14,8 @@
     try {
       const r = await fetch(ARREL + "api/upload", { method: "POST", body: f, headers: { "Content-Type": "application/octet-stream" } });
       const d = await r.json().catch(() => ({}));
+      // una partida de Marine Arena: la seva fitxa és a ma.lestudi.com
+      if (r.ok && d.id && d.web === "ma") { location.href = `https://ma.lestudi.com/game.html?id=${d.id}&lang=${LANG}`; return; }
       if (r.ok && d.id) { location.href = "game.html?id=" + d.id; return; }
       estat.textContent = t(r.status === 429 ? "err_429" : r.status === 413 ? "err_mida" : "err_" + (d.error || "analisi"));
     } catch {

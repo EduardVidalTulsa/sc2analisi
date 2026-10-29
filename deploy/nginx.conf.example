@@ -38,6 +38,17 @@ server {
         proxy_pass http://127.0.0.1:8765;
         proxy_read_timeout 60s;
     }
+    # optional, with a Marine Arena sister site: a game that is not here but is there goes to its page
+    # location ~ ^/(?:(?<lg>[a-z][a-z])/)?game\.html$ {
+    #     set $ma "";
+    #     if ($arg_id ~ "^[0-9a-f]{12}$") { set $ma "a"; }
+    #     if (-f /srv/sc2/html/data/games/$arg_id.json) { set $ma "${ma}s"; }
+    #     if (-f /srv/marinearena/html/data/games/$arg_id.json) { set $ma "${ma}m"; }
+    #     set $llg $lg;
+    #     if ($llg = "") { set $llg ca; }
+    #     if ($ma = "am") { return 302 https://ma.example.org/game.html?id=$arg_id&lang=$llg; }
+    #     add_header Cache-Control "no-cache";
+    # }
     location /data/ { add_header Cache-Control "no-cache"; }
     # CSS/JS/HTML change with every deploy: let the browser revalidate (304 if unchanged)
     location ~* \.(css|js|html)$ { add_header Cache-Control "no-cache"; }

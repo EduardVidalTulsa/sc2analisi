@@ -328,6 +328,16 @@ T = {
     fr="Logiciel libre (GPL-3.0 ou ultérieure) : le code est sur <a href=\"https://github.com/EduardVidalTulsa/sc2analisi\">GitHub</a>.",
     bn="মুক্ত সফটওয়্যার (GPL-3.0 বা পরবর্তী): কোড আছে <a href=\"https://github.com/EduardVidalTulsa/sc2analisi\">GitHub</a>-এ।",
     pt="Software livre (GPL-3.0 ou posterior): o código está no <a href=\"https://github.com/EduardVidalTulsa/sc2analisi\">GitHub</a>."),
+"germana_ma": dict(
+    ca="Jugues a Marine Arena? Mira què fan els que guanyen a <a href=\"https://ma.lestudi.com/?lang=ca\">ma.lestudi.com</a>.",
+    en="Do you play Marine Arena? See what winners do at <a href=\"https://ma.lestudi.com/?lang=en\">ma.lestudi.com</a>.",
+    zh="你玩 Marine Arena 吗？在 <a href=\"https://ma.lestudi.com/?lang=zh\">ma.lestudi.com</a> 看看胜者都在做什么。",
+    hi="क्या आप Marine Arena खेलते हैं? देखें जीतने वाले क्या करते हैं: <a href=\"https://ma.lestudi.com/?lang=hi\">ma.lestudi.com</a>।",
+    es="¿Juegas a Marine Arena? Mira qué hacen los que ganan en <a href=\"https://ma.lestudi.com/?lang=es\">ma.lestudi.com</a>.",
+    ar="هل تلعب Marine Arena؟ اطّلع على ما يفعله الفائزون في <a href=\"https://ma.lestudi.com/?lang=ar\">ma.lestudi.com</a>.",
+    fr="Tu joues à Marine Arena ? Découvre ce que font les gagnants sur <a href=\"https://ma.lestudi.com/?lang=fr\">ma.lestudi.com</a>.",
+    bn="তুমি কি Marine Arena খেলো? বিজয়ীরা কী করে দেখো <a href=\"https://ma.lestudi.com/?lang=bn\">ma.lestudi.com</a>-এ।",
+    pt="Você joga Marine Arena? Veja o que fazem os vencedores em <a href=\"https://ma.lestudi.com/?lang=pt\">ma.lestudi.com</a>."),
 "peu": dict(
     ca="Anàlisi feta a partir dels <i>tracker events</i> dels replays. El control de mapa és una estimació a partir d'estructures, tumors i posicions conegudes de l'exèrcit. StarCraft és una marca de Blizzard Entertainment; aquest lloc no hi té cap relació. Un projecte de <a href=\"https://lestudi.com/\">L'Estudi.com</a>.",
     en="Analysis built from the replays' <i>tracker events</i>. Map control is an estimate based on structures, tumours and known army positions. StarCraft is a trademark of Blizzard Entertainment; this site is not affiliated with it. A project by <a href=\"https://lestudi.com/en/\">L'Estudi.com</a>.",
