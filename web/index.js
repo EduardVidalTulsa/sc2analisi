@@ -48,6 +48,21 @@ function deMa(g) {
            jugadors: eqs.flat(), equips: eqs, href: `${MA}game.html?id=${g.id}&lang=${LANG}` };
 }
 
+// ---- al perfil: les partides de Marine Arena del jugador (data/ma-players/ és data/players/ de ma.lestudi.com)
+async function marineArena(toon, propi) {
+  const P = await json(`data/ma-players/${toon}.json`).catch(() => null);
+  if (!P || !P.length) return;
+  const dataMa = d => data(Date.parse(d + "Z") / 1000);
+  $("#ma-cap").innerHTML = `<tr><th>${t("data")}</th><th>${t("ma_posicio")}</th><th>${t("ma_company")}</th><th class="num">${t("durada")}</th></tr>`;
+  $("#ma-llista").innerHTML = P.slice(0, 20).map(p => `<tr class="clic" data-href="${MA}game.html?id=${p.id}&lang=${LANG}">
+    <td>${dataMa(p.data)}</td><td>${p.posicio ? `${p.posicio === 1 ? "<b>1</b>" : p.posicio} <span class="apagat">/ ${p.n_equips}</span>` : `<span class="apagat">–</span>`}</td>
+    <td>${esc(p.company.join(", "))}</td><td class="num">${mmss(p.durada)}</td></tr>`).join("");
+  $("#ma-llista").addEventListener("click", ev => { const tr = ev.target.closest("tr[data-href]"); if (tr) location.href = tr.dataset.href; });
+  $("#ma-perfil").href = `${MA}player.html?player=${encodeURIComponent(toon)}&lang=${LANG}`;
+  $("#ma-perfil").textContent = propi ? t("ma_perfil") : t("ma_perfil_de", { nom: P[0].nom });
+  $("#ma").classList.remove("amagat");
+}
+
 // ---- llista del servidor: totes les partides registrades, de qualsevol jugador, amb ordre i filtres
 async function recents() {
   $("#tauler").classList.add("amagat");
@@ -75,8 +90,8 @@ async function recents() {
     const nom = /^[1-9]-S2-[1-9]-[0-9]+$/.test(j.toon || "") ? `<a class="nom-jugador" href="${j.perfil || "./?player=" + encodeURIComponent(j.toon)}">${esc(j.nom)}</a>` : esc(j.nom);
     return `${j.raça ? raca(j.raça) + " " : ""}${j.resultat === "V" ? `<b>${nom}</b>` : nom}`;
   };
-  // Marine Arena: equips de dos, amb els noms units per "+"
-  const jugadors = g => g.equips ? g.equips.map(e => e.map(jugador).join(" + ")).join(` <span class="apagat">${t("vs")}</span> `)
+  // Marine Arena: quatre equips de dos, cadascun en una línia (en una sola, la taula no hi cap)
+  const jugadors = g => g.equips ? g.equips.map(e => `<div class="equip-ma">${e.map(jugador).join(" + ")}</div>`).join("")
     : g.jugadors.map(jugador).join(` <span class="apagat">${t("vs")}</span> `);
   function pinta() {
     $("#recents-cap").innerHTML = "<tr>" + COLS.map(([c, txt, n]) => !c ? `<th>${txt}</th>`
@@ -175,6 +190,7 @@ async function recents() {
       casella.disabled = false;
     });
   }
+  marineArena(perfil, propi);
   let totes = await json(`data/players/${perfil}.json`).catch(() => null);
   if (!totes) {
     if (propi) $("#tiles").innerHTML = `<p class="apagat">${t("sense_partides")}</p>`;

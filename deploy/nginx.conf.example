@@ -51,6 +51,7 @@ server {
     # }
     # and its game list, shown in the server list here
     # location = /data/ma-games.json { alias /srv/marinearena/html/data/games.json; add_header Cache-Control "no-cache"; }
+    # location /data/ma-players/ { alias /srv/marinearena/html/data/players/; add_header Cache-Control "no-cache"; }
     location /data/ { add_header Cache-Control "no-cache"; }
     # CSS/JS/HTML change with every deploy: let the browser revalidate (304 if unchanged)
     location ~* \.(css|js|html)$ { add_header Cache-Control "no-cache"; }
